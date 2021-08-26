@@ -14,7 +14,7 @@
           </div>
           <div>
             <div class="ml-4 flex items-center md:ml-6">
-              <AuthButton :token="token" @logout="logout" />
+              <AuthButton :token="token" @logout="logout" @login="login" />
             </div>
           </div>
         </div>
@@ -54,20 +54,23 @@ export default {
     token: '',
   }),
   mounted() {
-    if (localStorage.githubToken) {
+    if (localStorage['vue-authenticate.vueauth_ghstatus_token']) {
       console.log('loaded token from storage');
-      this.token = localStorage.githubToken;
+      this.token = localStorage['vue-authenticate.vueauth_ghstatus_token'];
     }
   },
   watch: {
     token(newToken) {
       console.log('setting token to ', newToken);
-      localStorage.githubToken = newToken;
+      localStorage['vue-authenticate.vueauth_ghstatus_token'] = newToken;
     },
   },
   methods: {
+    login(newToken) {
+      this.token = newToken;
+    },
     logout() {
-      localStorage.removeItem('githubToken');
+      localStorage.removeItem('vue-authenticate.vueauth_ghstatus_token');
       this.token = '';
     },
   },

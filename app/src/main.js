@@ -6,7 +6,7 @@ import App from './App.vue'
 
 Vue.use(VueAxios, axios)
 Vue.use(VueAuthenticate, {
-  baseUrl: 'http://localhost:8080', // Your API domain
+  baseUrl: 'http://localhost:3000', // Your API domain
   providers: {
     github: {
       scope: 'repo', // @todo, can this be a smaller scope?
@@ -14,6 +14,7 @@ Vue.use(VueAuthenticate, {
       redirectUri: 'http://localhost:8080/auth/callback' // Your client app URL
     },
   },
+  tokenName: 'ghstatus_token',
 });
 
 // Vue.config.productionTip = false

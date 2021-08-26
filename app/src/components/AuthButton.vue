@@ -15,14 +15,10 @@ export default {
   methods: {
     authenticate() {
       if (this.token) return this.$emit('logout');
-
       this.$auth.authenticate('github')
-      .then((data) => {
-        // Execute application logic after successful social authentication
-        console.log('authed', data);
-      }).catch((err) => {
-        // Execute application logic after failed social authentication
-        console.log('failed', err);
+      .then(({ data }) => {
+        const { access_token } = data;
+        this.$emit('login', access_token);
       });
     },
   },
