@@ -21,7 +21,7 @@
       </div>
     </nav>
 
-    <router-view/>
+    <router-view :token="token" />
   </div>
 </template>
 
@@ -42,13 +42,11 @@ export default {
   },
   mounted() {
     if (localStorage['vue-authenticate.vueauth_ghstatus_token']) {
-      console.log('loaded token from storage');
       this.token = localStorage['vue-authenticate.vueauth_ghstatus_token'];
     }
   },
   watch: {
     token(newToken) {
-      console.log('setting token to ', newToken);
       localStorage['vue-authenticate.vueauth_ghstatus_token'] = newToken;
     },
   },
