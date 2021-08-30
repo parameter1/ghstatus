@@ -18,7 +18,7 @@ Vue.use(VueAuthenticate, {
   tokenName: 'ghstatus_token',
 });
 
-// Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,

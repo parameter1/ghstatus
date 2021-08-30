@@ -10,26 +10,74 @@
 
     <main>
       <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <!-- Replace with your content -->
-        <div class="px-4 py-4 sm:px-0">
-          <div class="border-4 border-dashed border-gray-200 rounded-lg h-96">
-            <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <div class="flex flex-col mt-3">
+          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Organization
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Repository Name
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Updated
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Version
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr v-if="error">
+                      <td colspan=6 class="px-6 py-4 whitespace-nowrap text-center text-sm text-red-500">{{ error }}</td>
+                    </tr>
+                    <tr v-if="loading">
+                      <td colspan=6 class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">Loading repository statuses...</td>
+                    </tr>
+                    <Repository v-else v-for="repo in repositories" :key="repo.id" :repo="repo" />
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- /End replace -->
       </div>
     </main>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Repository from '../components/Repository.vue';
+import store from '../store/repositories';
 
 export default {
-  name: 'Home',
+  data: () => ({
+    repositories: [],
+    error: null,
+    loading: true,
+  }),
+  props: {
+    token: String,
+  },
   components: {
-    HelloWorld
-  }
-}
+    Repository,
+  },
+  async created() {
+    try {
+      if (!this.token) throw new Error('Unauthenticated! Log in first.');
+      this.repositories = await store.getEnabledRepositories(this.token);
+    } catch (e) {
+      this.error = e;
+    } finally {
+      this.loading = false;
+    }
+  },
+};
 </script>

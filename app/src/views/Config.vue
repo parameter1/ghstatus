@@ -89,18 +89,7 @@
 </template>
 
 <script>
-import { Octokit } from '@octokit/core';
-
-const loadRepositories = async (token, page = null) => {
-  const octokit = new Octokit({ auth: token });
-  const { data } = await octokit.request('GET /user/repos', {
-    sort: 'updated',
-    per_page: 25,
-  });
-  // @todo paginate!
-  console.log(page);
-  return data;
-};
+import store from '../store/repositories';
 
 export default {
   data: () => ({
@@ -122,32 +111,22 @@ export default {
   },
   async mounted() {
     try {
-      this.available = await loadRepositories(this.token);
+      if (!this.token) throw new Error('Unauthenticated! Log in first.');
+      this.enabled = await store.getEnabled();
+      this.available = await store.getRepositories(this.token);
     } catch (e) {
       this.error = e;
     } finally {
       this.loading = false;
     }
-
-    if (localStorage['ghstatus_enabled']) {
-      try {
-        this.enabled = JSON.parse(localStorage['ghstatus_enabled']);
-        console.log('Loaded enabled repos', this.enabled);
-      } catch (e) {
-        console.error('Unable to load enabled enabled from local storage!', e);
-        this.enabled = [];
-      }
-    }
   },
   watch: {
-    enabled(newRepos) {
-      console.log('setting enabled to ', newRepos);
-      localStorage['ghstatus_enabled'] = JSON.stringify(newRepos);
+    enabled(v) {
+      store.setEnabled(v);
     },
   },
   methods: {
     toggleRepo(repo) {
-      console.log(repo);
       if (this.enabled.includes(repo.full_name)) {
         this.enabled.splice(this.enabled.indexOf(repo.full_name), 1);
       } else {
