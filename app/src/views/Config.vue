@@ -48,13 +48,13 @@
                         </tr>
                         <tr v-else v-for="repo in repositories" :key="repo.id">
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ repo.owner.login }}
+                            {{ repo.owner }}
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ repo.name }}
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ repo.updated_at }}
+                            {{ repo.updatedAt }}
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <span v-if="repo._enabled" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -78,7 +78,11 @@
             </div>
 
             <p class="text-grey mt-6 pb-6 text-center">
-              Missing repositories? <a href="https://github.com/settings/connections/applications/9447e0e308f852a0d11e" target="_blank" class="text-indigo-600 hover:text-indigo-900">Review organization access</a>.
+              Missing repositories? <a href="https://github.com/settings/connections/applications/9447e0e308f852a0d11e" target="_blank" class="text-indigo-600 hover:text-indigo-900">Review organization access</a>
+              or
+              <button class="text-indigo-600 hover:text-indigo-900" @click="refresh">
+                Refresh
+              </button>
             </p>
           </div>
         </div>
@@ -100,10 +104,15 @@ export default {
   }),
   computed: {
     repositories() {
-      return this.available.map((repo) => ({
-        ...repo,
-        _enabled: this.enabled.includes(repo.full_name),
-      }));
+      return this.available.map((repo) => {
+        const [owner, name] = repo.nameWithOwner.split('/');
+        return {
+          ...repo,
+          owner,
+          name,
+          _enabled: this.enabled.includes(repo.nameWithOwner),
+        };
+      });
     },
   },
   props: {
@@ -113,7 +122,8 @@ export default {
     try {
       if (!this.token) throw new Error('Unauthenticated! Log in first.');
       this.enabled = await store.getEnabled();
-      this.available = await store.getRepositories(this.token);
+      this.available = await store.getRepositories();
+      console.log('avail', this.available);
     } catch (e) {
       this.error = e;
     } finally {
@@ -127,10 +137,22 @@ export default {
   },
   methods: {
     toggleRepo(repo) {
-      if (this.enabled.includes(repo.full_name)) {
-        this.enabled.splice(this.enabled.indexOf(repo.full_name), 1);
+      if (this.enabled.includes(repo.nameWithOwner)) {
+        this.enabled.splice(this.enabled.indexOf(repo.nameWithOwner), 1);
       } else {
-        this.enabled.push(repo.full_name);
+        this.enabled.push(repo.nameWithOwner);
+      }
+    },
+    async refresh() {
+      try {
+        if (!this.token) throw new Error('Unauthenticated! Log in first.');
+        this.loading = true;
+        this.available = await store.fetchRepos(null, true );
+        console.log('avail', this.available);
+      } catch (e) {
+        this.error = e;
+      } finally {
+        this.loading = false;
       }
     },
   },

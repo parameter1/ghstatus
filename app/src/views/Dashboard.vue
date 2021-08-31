@@ -71,8 +71,7 @@ export default {
   },
   async created() {
     try {
-      if (!this.token) throw new Error('Unauthenticated! Log in first.');
-      this.repositories = await store.getEnabledRepositories(this.token);
+      this.repositories = await store.getEnabledRepositories();
     } catch (e) {
       this.error = e;
     } finally {

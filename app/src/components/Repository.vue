@@ -29,11 +29,14 @@
 <script>
 export default {
   props: {
-    repo: Object,
+    repo: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     version() {
-      const releases = this.repo.releases.length ? this.repo.releases : [{ tagName: 'master' }];
+      const releases = this.repo.releases.length ? this.repo.releases : [{ tagName: 'v0.0.0' }];
       return releases[0].tagName;
     },
     needsDeploy() {
