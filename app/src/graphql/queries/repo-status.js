@@ -25,6 +25,7 @@ query RepoSummary($owner: String!, $name: String!) {
           number
           updatedAt
           title
+          isDraft
         }
       }
     }

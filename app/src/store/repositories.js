@@ -54,7 +54,7 @@ export default {
         ...repository,
         // @todo use get
         releases: repository.releases.edges.map(({ node }) => node),
-        openPRs: repository.pullRequests.edges.map(({ node }) => node),
+        openPRs: repository.pullRequests.edges.map(({ node }) => node).filter(({ isDraft }) => !isDraft),
         history: repository.object.history.edges.map(({ node }) => node),
       };
       return data;
