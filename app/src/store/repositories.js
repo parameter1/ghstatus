@@ -6,7 +6,8 @@ const getToken = () => localStorage.getItem('vue-authenticate.vueauth_ghstatus_t
 
 const getEnabled = () => {
   try {
-    return JSON.parse(localStorage.getItem('ghstatus_enabled'));
+    const arr = JSON.parse(localStorage.getItem('ghstatus_enabled')) || [];
+    return arr;
   } catch (e) {
     console.error('Unable to load enabled repository list from local storage!', e);
   }
@@ -40,7 +41,7 @@ export default {
       if (!repos.length) return fetchRepos(null, true);
       return repos;
     } catch (e) {
-      console.error(e);
+      console.error(e, 'getRepositories');
     }
     return [];
   },

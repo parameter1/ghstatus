@@ -5,14 +5,17 @@ import axios from 'axios';
 import App from './App.vue'
 import router from './router'
 
+const feUrl = process.env.VUE_FRONTEND_URL || 'http://localhost:8080';
+const beUrl = process.env.VUE_BACKEND_URL || 'http://localhost:3000';
+
 Vue.use(VueAxios, axios)
 Vue.use(VueAuthenticate, {
-  baseUrl: 'http://localhost:3000', // Your API domain
+  baseUrl: beUrl, // Your API domain
   providers: {
     github: {
       scope: 'repo', // @todo, can this be a smaller scope?
       clientId: '9447e0e308f852a0d11e',
-      redirectUri: 'http://localhost:8080/auth/callback' // Your client app URL
+      redirectUri: `${feUrl}/auth/callback`, // Your client app URL
     },
   },
   tokenName: 'ghstatus_token',

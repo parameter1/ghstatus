@@ -2,6 +2,7 @@
   "name": "@ghstatus/server",
   "version": "0.0.0",
   "description": "",
+  "private": true,
   "main": "app.js",
   "directories": {
     "test": "test"
@@ -9,7 +10,7 @@
   "scripts": {
     "test": "tap \"test/**/*.test.js\"",
     "start": "fastify start -l info app.js",
-    "dev": "fastify start -w -l info -P app.js"
+    "dev": "NODE_ENV=dev fastify start -w -l info -P app.js"
   },
   "keywords": [],
   "author": "Josh Worden <josh@parameter1.com>",
@@ -22,6 +23,7 @@
     "fastify-cli": "^2.13.0",
     "fastify-plugin": "^3.0.0",
     "fastify-sensible": "^3.1.0",
+    "fastify-static": "^4.2.3",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {

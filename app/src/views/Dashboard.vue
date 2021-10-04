@@ -41,6 +41,9 @@
                     <tr v-if="loading">
                       <td colspan=6 class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">Loading repository statuses...</td>
                     </tr>
+                    <tr v-else-if="!repositories.length">
+                      <td colspan=6 class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">No repositories enabled. Update your settings on the <a href="/config">Config screen</a>.</td>
+                    </tr>
                     <Repository v-else v-for="repo in repositories" :key="repo.id" :repo="repo" />
                   </tbody>
                 </table>
