@@ -1,0 +1,4 @@
+app/Dockerfile
+server/Dockerfile
+**/node_modules
+**/.env

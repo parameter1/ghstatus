@@ -5,8 +5,8 @@ import axios from 'axios';
 import App from './App.vue'
 import router from './router'
 
-const feUrl = process.env.VUE_FRONTEND_URL || 'http://localhost:8080';
-const beUrl = process.env.VUE_BACKEND_URL || 'http://localhost:3000';
+const feUrl = process.env.VUE_APP_FRONTEND_URL || 'http://localhost:8080';
+const beUrl = process.env.VUE_APP_BACKEND_URL || 'http://localhost:3000';
 
 Vue.use(VueAxios, axios)
 Vue.use(VueAuthenticate, {
