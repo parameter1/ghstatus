@@ -47,7 +47,7 @@ jobs:
           {
             attachments: [{
               color: '#1d9bd1',
-              text: `Deployment of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} has started.`,
+              text: `Deployment of ${process.env.AS_REPO} app @ ${process.env.AS_REF} by ${process.env.AS_AUTHOR} has started.`,
             }]
           }
       env:
@@ -68,7 +68,7 @@ jobs:
           {
             attachments: [{
               color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-              text: `Deployment of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
+              text: `Deployment of ${process.env.AS_REPO} app @ ${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
             }]
           }
       env:

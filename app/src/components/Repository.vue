@@ -14,7 +14,7 @@
         Needs deploy
       </span>
       <a v-else-if="needsMerge" target="_blank" :href="repo.url + '/pulls'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-        Needs merge
+        Needs merge <external-link-icon />
       </a>
       <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-grey-100 text-grey-800">
         Up to date
@@ -27,7 +27,12 @@
 </template>
 
 <script>
+import ExternalLinkIcon from './ExternalLinkIcon.vue';
+
 export default {
+  components: {
+    ExternalLinkIcon,
+  },
   props: {
     repo: {
       type: Object,
