@@ -2,6 +2,9 @@
   "name": "ghstatus",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "test": "lerna run test"
+  },
   "devDependencies": {
     "eslint": "^6.7.2",
     "lerna": "^3.22.1"
