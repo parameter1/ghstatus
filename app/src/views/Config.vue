@@ -123,7 +123,6 @@ export default {
       if (!this.token) throw new Error('Unauthenticated! Log in first.');
       this.enabled = await store.getEnabled();
       this.available = await store.getRepositories();
-      console.log('avail', this.available);
     } catch (e) {
       this.error = e;
     } finally {
@@ -147,7 +146,7 @@ export default {
       try {
         if (!this.token) throw new Error('Unauthenticated! Log in first.');
         this.loading = true;
-        this.available = await store.fetchRepos(null, true );
+        this.available = await store.fetchRepos(null, true);
         console.log('avail', this.available);
       } catch (e) {
         this.error = e;

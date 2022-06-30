@@ -2,10 +2,11 @@ export default `
 query UserRepos($after: String) {
   viewer {
     repositories(
+      affiliations: [ORGANIZATION_MEMBER, OWNER, COLLABORATOR]
       ownerAffiliations: [ORGANIZATION_MEMBER, OWNER, COLLABORATOR]
-      orderBy: { field: CREATED_AT, direction: DESC }
+      orderBy: { field: NAME, direction: ASC }
       isFork: false
-      first: 30
+      first: 100
       after: $after
     ) {
       edges {
